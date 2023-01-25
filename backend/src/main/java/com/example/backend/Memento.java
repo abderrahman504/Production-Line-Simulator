@@ -1,4 +1,4 @@
-package com.prod.productionLine;
+package com.example.backend;
 
 public class Memento {
 }
