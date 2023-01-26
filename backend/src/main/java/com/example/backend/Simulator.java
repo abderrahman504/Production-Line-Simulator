@@ -1,4 +1,6 @@
 package com.example.backend;
 
-public class Memento {
+public class Simulator 
+{
+	
 }
