@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "konva": "^8.4.2",
+    "ng2-konva": "^6.0.0"
+  }
+}
