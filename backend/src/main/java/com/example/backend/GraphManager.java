@@ -33,4 +33,12 @@ public class GraphManager
 		out.add_input(in);
 	}
 
+	public void remove_connection(int start, int end)
+	{
+		Node in = nodes.get(start);
+		Node out = nodes.get(end);
+		in.remove_output(end);
+		out.remove_input(start);
+	}
+
 }

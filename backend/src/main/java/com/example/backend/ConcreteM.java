@@ -28,6 +28,16 @@ public class ConcreteM extends Node implements Runnable
 		t = new Thread(this, "M" + id);
     }
 
+	public void add_output(Node out)
+	{
+		output = (ConcreteQ)out;
+	}
+
+	public void remove_output(int id)
+	{
+		output = null;
+	}
+
 	public boolean is_ready() {return ready;}
 
 	// Caller inputs to machine
