@@ -28,16 +28,6 @@ public class ConcreteM extends Node implements Runnable
 		t = new Thread(this, "M" + id);
     }
 
-	public void add_output(Node out)
-	{
-		output = (ConcreteQ) out;
-	}
-
-	public void remove_output(int id)
-	{
-		output = null;
-	}
-
 	public boolean is_ready() {return ready;}
 
 	// Caller inputs to machine
@@ -63,7 +53,7 @@ public class ConcreteM extends Node implements Runnable
 	{
 		ready = true;
 		output.add_item(currentItem);
-		collector.addUpdate(new Transition(this.get_id(), output.get_id(), currentItem.getColor().toString()));
+		collector.addUpdate(new Transition(this.get_id(), output.get_id(), currentItem.getColor()));
 		//Call Controller to signal to front to update this M to the idle color. 
 		currentItem = null;
 		notify_inputs();

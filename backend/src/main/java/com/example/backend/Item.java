@@ -13,9 +13,9 @@ public class Item {
         color = new Color(r, g, b);
     }
 
-	public Color getColor()
+	public String getColor()
 	{
-		return new Color(color.getRGB());
+		return "rgb(" + color.getRed() + "," + color.getGreen() + "," + color.getBlue() + ")";
 	}
 
 }
