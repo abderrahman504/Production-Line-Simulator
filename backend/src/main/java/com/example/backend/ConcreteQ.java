@@ -22,6 +22,16 @@ public class ConcreteQ extends Node
         this.out_nodes = new HashMap<Integer, ConcreteM>();
     }
 
+	public void add_output(Node out)
+	{
+		out_nodes.put(out.get_id(), (ConcreteM)out);
+	}
+
+	public void remove_output(int id)
+	{
+		out_nodes.remove(id);
+	}
+
 	// Input to queue
     synchronized public void add_item(Item i)
 	{

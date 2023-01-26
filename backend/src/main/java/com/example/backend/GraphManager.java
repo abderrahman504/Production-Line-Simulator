@@ -5,22 +5,24 @@ import java.util.HashMap;
 public class GraphManager 
 {
 	private HashMap<Integer, Node> nodes;
+	private Collector collector;
 
 	public GraphManager()
 	{
 		nodes = new HashMap<Integer, Node>();
+		collector = Collector.getInstance();
 	}
 
 
 	public void new_M(int id)
 	{
-		nodes.put(id, new ConcreteM(id));
+		nodes.put(id, new ConcreteM(id, collector));
 	}
 
 	
 	public void new_Q(int id)
 	{
-		nodes.put(id, new ConcreteQ(id));
+		nodes.put(id, new ConcreteQ(id, collector));
 	}
 
 	public void add_connection(int start, int end)
@@ -31,5 +33,4 @@ public class GraphManager
 		out.add_input(in);
 	}
 
-	
 }
