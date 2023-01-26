@@ -1,8 +1,16 @@
 import { Component } from '@angular/core';
 import Konva from 'konva';
+import { Group } from 'konva/lib/Group';
 import { Layer } from 'konva/lib/Layer';
 import { Stage } from 'konva/lib/Stage';
 import { ShapCreator } from './shapes/Shapefactory/shapeFactory';
+import { Draw } from './draw';
+import { circle } from 'src/app/paint/circle';
+import { TextCircle } from "./TextCircle";
+import { rectangle } from 'src/app/paint/rectangle';
+import { TextRectangle } from "./TextRectangle";
+import { NgForm } from '@angular/forms';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -18,6 +26,10 @@ export class AppComponent {
   tr: any;
   stage: any;
   layer: any;
+  counterQueue = -1;
+  drawingState: any;
+  http: any;
+  counterMachine = -1;
   constructor(factory: ShapCreator) {
     this.shapeFactory = factory;
 
@@ -41,10 +53,10 @@ export class AppComponent {
       .factoryClass(
         this.id.toString(),
         shape,
-        50,
-        50,
-        200,
+        600,
+        300,
         100,
+        50,
         '#ffffff',
         '#000000',
         3,
@@ -60,7 +72,7 @@ export class AppComponent {
   transform() {
     console.log("11111111");
     const component = this;
-    this.stage.on('click tap', function (e:any) {
+    this.stage.on('click tap', function (e: any) {
       if (e.target == component.stage) {
         component.tr.nodes([]);
         return;
@@ -68,5 +80,140 @@ export class AppComponent {
       e.target.draggable(true);
       component.tr.nodes([e.target]);
     });
+  }
+
+  queueState() {
+    this.counterQueue++
+    let group = new Group({
+      draggable: true,
+      id: "q" + this.counterQueue.toString()
+    })
+    this.drawingState = new Draw()
+    this.drawingState.setState(new rectangle(this.http))
+
+    this.drawingState.seti(this.counterQueue)
+
+    group.add(this.drawingState.draw())
+    group.add(new TextRectangle().draw(this.counterQueue))
+
+    this.layer.add(group)
+  }
+
+  machineState() {
+    this.counterMachine++
+    let group = new Group({
+      draggable: true,
+      id: "m" + this.counterMachine.toString()
+    })
+    this.drawingState = new Draw()
+
+    this.drawingState.setState(new circle(this.http))
+    this.drawingState.seti(this.counterMachine)
+    group.add(this.drawingState.draw())
+    group.add(new TextCircle().draw(this.counterMachine))
+    this.layer.add(group)
+  }
+
+
+
+  connectionState(logInForm: NgForm) {
+    let from = logInForm.value.from
+    let to = logInForm.value.to
+    if (!((from[0] == "M" && to[0] == "Q") || (from[0] == "Q" && to[0] == "M"))) {
+      return
+    }
+    let ff = from.substring(1, from.length)
+    let f: number = +ff
+    console.log(f)
+    let tt = to.substring(1, to.length)
+    let t: number = +tt
+    console.log(t)
+    if ((from[0] == "M" && f > this.counterMachine) || (from[0] == "Q" && f > this.counterQueue)
+      || (to[0] == "M" && t > this.counterMachine) || (to[0] == "Q" && t > this.counterQueue)) {
+      return
+    }
+    if (isNaN(f) || isNaN(t))
+      return
+
+    if (to == "Q0") {
+      return
+    }
+
+    if (from[0] == 'M') {
+      // this.http.get("http://localhost:8080/connectMachineToQueue", {
+      //   params: {
+      //     machineId: f,
+      //     queueId: t
+      //   }
+      // }).subscribe();
+    }
+    if (from[0] == 'Q') {
+      // this.http.get("http://localhost:8080/connectQueueToMachine", {
+      //   params: {
+      //     queueId: f,
+      //     machineId: t
+      //   }
+      // }).subscribe();
+    }
+    let x = "#" + from
+    let gx = "#" + from
+    gx = gx.toLowerCase()
+    let y = "#" + to
+    let gy = "#" + to
+    gy = gy.toLowerCase()
+    var machine = this.stage.findOne(x)
+    var queue = this.stage.findOne(y)
+
+    let x1 = 100, y1 = 100, x2 = 100, y2 = 100
+    if (machine.parent?.attrs.x != null)
+      x1 = machine.parent?.attrs.x + 100
+    if (machine.parent?.attrs.y != null)
+      y1 = machine.parent?.attrs.y + 100
+    if (queue.parent?.attrs.x != null)
+      x2 = queue.parent?.attrs.x + 100
+    if (queue.parent?.attrs.y != null)
+      y2 = queue.parent?.attrs.y + 100
+    this.stage.findOne(gx).draggable(false)
+    this.stage.findOne(gy).draggable(false)
+    let line = new Konva.Arrow({
+      points: [x1, y1, x2, y2],
+      stroke: 'red',
+      strokeWidth: 3,
+      pointerLength: 10,
+      pointerWidth: 10,
+    });
+    this.layer.add(line)
+  }
+
+
+  connect(A: string, B: string) {
+
+    var shape = this.stage.findOne('#' + (A));
+    var shape2 = this.stage.findOne('#' + (B));
+    console.log(shape)
+    console.log(shape2)
+    var arrow = new Konva.Arrow({
+      id: this.id.toString(),
+      points: [shape.x(), shape.y(), shape2.x(), shape2.y()],
+      pointerLength: 10,
+      pointerWidth: 10,
+      fill: 'black',
+      stroke: 'black',
+      strokeWidth: 4
+    })
+
+    this.layer.add(arrow);
+    this.id++;
+  }
+
+
+
+  clear() {
+    // this.http.get("http://localhost:8080/clear").subscribe();
+    this.layer.destroy()
+    this.layer = new Layer()
+    this.stage.add(this.layer)
+    this.counterMachine = -1
+    this.counterQueue = -1
   }
 }

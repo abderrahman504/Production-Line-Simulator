@@ -1,6 +1,6 @@
 #canvas {
-  background: rgb(255, 255, 255);
-  width: 100%;
+  background: #eee;
+  width: calc(100% - 40px);
   height: 80%;
   position: absolute;
   margin: 20px;
@@ -33,4 +33,19 @@
 button {
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.form-signin {
+
+  display: flex;
+}
+
+input {
+  border: none;
+  border-radius: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  background-color: rgb(212, 212, 212);
+  height: 40px;
+  padding: 5px;
 }
