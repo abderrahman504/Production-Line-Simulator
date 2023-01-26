@@ -47,6 +47,7 @@ public class ConcreteM extends Node implements Runnable, M
 	{
 		ready = true;
 		output.add_item(currentItem);
+		//Call Controller to signal to front to update this M to the idle color. 
 		currentItem = null;
 		notify_inputs();
 	}
@@ -57,8 +58,10 @@ public class ConcreteM extends Node implements Runnable, M
         try {
 			while (currentItem != null)
 			{
+				//Call Controller to signal to front to update this M's color.
 				Thread.sleep(serviceTime);
 				finish_service();
+				
 			}
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
