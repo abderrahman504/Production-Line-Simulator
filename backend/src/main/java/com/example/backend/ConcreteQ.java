@@ -6,20 +6,23 @@ import java.util.Queue;
 
 
 
-public class ConcreteQ extends Node implements Q
+public class ConcreteQ extends Node
 {
+	Collector collector;
     private Queue<Item> queue;
-	private HashMap<Integer, M> out_nodes;
+	private HashMap<Integer, ConcreteM> out_nodes;
 	private boolean wasEmpty = true;
 	
 
-    public ConcreteQ(int id)
+    public ConcreteQ(int id, Collector collector)
 	{
+		this.collector = collector;
 		this.id = id;
         queue = new LinkedList<Item>();
-        this.out_nodes = new HashMap<Integer, M>();
+        this.out_nodes = new HashMap<Integer, ConcreteM>();
     }
-    
+
+	// Input to queue
     synchronized public void add_item(Item i)
 	{
         this.queue.add(i);
@@ -30,19 +33,23 @@ public class ConcreteQ extends Node implements Q
 		}
     }
 
-	synchronized public void request_item(M destination)
+	// Machine requests output from queue
+	synchronized public void request_item(ConcreteM destination)
 	{
 		if (queue.isEmpty()) 
 		{
 			wasEmpty = true;
 			return;
 		}
-		destination.try_feed(queue.remove());
+		boolean success = destination.try_feed(queue.peek());
+		if (success){
+			collector.addUpdate(new Transition(this.get_id(), destination.get_id(), queue.remove().getColor().toString()));
+		}
 	}
 
 	void feed_outputs()
 	{
-		for (M out: out_nodes.values())
+		for (ConcreteM out: out_nodes.values())
 		{
 			if (queue.isEmpty())
 			{
