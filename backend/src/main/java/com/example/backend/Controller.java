@@ -1,6 +1,8 @@
 package com.example.backend;
 
 
+import java.util.ArrayList;
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -44,11 +46,11 @@ public class Controller {
 		graphManager.remove_connection(start, end);
 	}
 	
-	@GetMapping("/setRoot")
-	public void set_root_Q(@RequestParam int id)
-	{
-		graphManager.set_root_Q(id);
-	}
+	// @GetMapping("/setRoot")
+	// public void set_root_Q(@RequestParam int id)
+	// {
+	// 	graphManager.set_root_Q(id);
+	// }
 	
 	@GetMapping("/clearBoard")
 	public void clear_board()
@@ -83,8 +85,6 @@ public class Controller {
 	@PostMapping("/update")
 	public ArrayList<Transition> get_updates()
 	{
-		collector.getInstance().getUpdates();
+		return collector.getUpdates();
 	}
-	
-	
 }

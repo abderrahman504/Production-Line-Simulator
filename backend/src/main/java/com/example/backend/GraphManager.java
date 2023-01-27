@@ -8,6 +8,7 @@ public class GraphManager
 	private Collector collector;
 	private ConcreteQ rootQ;
 	private static GraphManager instance;
+	private boolean firstQ = true;
 
 	public GraphManager()
 	{
@@ -38,6 +39,7 @@ public class GraphManager
 	public void new_Q(int id)
 	{
 		nodes.put(id, new ConcreteQ(id, collector));
+		if (firstQ) set_root_Q(id);
 	}
 
 	/**
@@ -84,6 +86,7 @@ public class GraphManager
 	public void clear()
 	{
 		nodes = new HashMap<Integer, Node>();
+		firstQ = true;
 	}
 
 	/**
