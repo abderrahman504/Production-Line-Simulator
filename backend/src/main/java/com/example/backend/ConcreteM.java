@@ -2,7 +2,7 @@ package com.example.backend;
 // import java.awt.Color;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.Map.Entry;
+// import java.util.Map.Entry;
 
 
 public class ConcreteM extends Node implements Runnable
@@ -55,8 +55,6 @@ public class ConcreteM extends Node implements Runnable
 		for (Node in: in_nodes.values())
 		{
 			((ConcreteQ)in).request_item(this);
-			if (currentItem == null) continue;
-			break;
 		}
 	}
 
@@ -68,7 +66,7 @@ public class ConcreteM extends Node implements Runnable
 		//Call Controller to signal to front to update this M to the idle color.
 		currentItem = null;
 		ready = true;
-		notify_inputs();
+		// notify_inputs();
 	}
 
 
@@ -76,14 +74,22 @@ public class ConcreteM extends Node implements Runnable
 	public void run(){
 		try {
 			while(true){
-				for (Node input : this.in_nodes.values()){
-					if(((ConcreteQ)input).request_item(this)){
-						Thread.sleep(serviceTime*Simulator.getInstance().timeUnit);
-						finish_service();
-					}else{
-						Thread.sleep(250);
-					}
+				notify_inputs();
+				if (currentItem != null)
+				{
+					Thread.sleep(serviceTime*Simulator.getInstance().timeUnit);
+					finish_service();
 				}
+				else Thread.sleep(Simulator.getInstance().timeUnit);
+				
+				// for (Node input : this.in_nodes.values()){
+				// 	if(((ConcreteQ)input).request_item(this)){
+				// 		Thread.sleep(serviceTime*Simulator.getInstance().timeUnit);
+				// 		finish_service();
+				// 	}else{
+				// 		Thread.sleep(250);
+				// 	}
+				// }
 			}
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
@@ -96,4 +102,9 @@ public class ConcreteM extends Node implements Runnable
 	}
 
 	public void clear_contents() {currentItem = null;}
+
+	public void stop_machine()
+	{
+		t.interrupt();
+	}
 }
