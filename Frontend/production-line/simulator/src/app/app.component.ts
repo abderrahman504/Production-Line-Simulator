@@ -159,7 +159,7 @@ export class AppComponent {
     }
 
     if (from[0] == 'M') {
-      // this.http.get("http://localhost:8080/connectMachineToQueue", {
+      // this.http.get("http://localhost:8080/back/connectMachineToQueue", {
       //   params: {
       //     machineId: f,
       //     queueId: t
