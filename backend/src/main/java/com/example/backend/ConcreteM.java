@@ -28,6 +28,11 @@ public class ConcreteM extends Node implements Runnable
 		t = new Thread(this, "M" + id);
 	}
 
+	public void add_input(Node in)
+	{
+		in_nodes.put(in.get_id(), in);
+	}
+
 	public void add_output(Node out)
 	{
 		output = (ConcreteQ)out;

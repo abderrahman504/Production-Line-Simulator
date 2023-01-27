@@ -1,11 +1,11 @@
 package com.example.backend;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class GraphManager 
 {
-	private HashMap<Integer, ConcreteQ> queues;
-	private HashMap<Integer, ConcreteM> machines;
+	private ArrayList<ConcreteQ> queues;
+	private ArrayList<ConcreteM> machines;
 	
 	private Collector collector;
 	private ConcreteQ rootQ;
@@ -14,8 +14,8 @@ public class GraphManager
 
 	public GraphManager()
 	{
-		machines = new HashMap<Integer, ConcreteM>();
-		queues = new HashMap<Integer, ConcreteQ>();
+		machines = new ArrayList<ConcreteM>();
+		queues = new ArrayList<ConcreteQ>();
 		collector = Collector.getInstance();
 	}
 
@@ -32,7 +32,8 @@ public class GraphManager
 	 */
 	public void new_M(int id)
 	{
-		machines.put(id, new ConcreteM(id, collector));
+		ConcreteM machine = new ConcreteM(id, collector);
+		machines.add(machine);
 	}
 
 	/**
@@ -41,7 +42,7 @@ public class GraphManager
 	 */
 	public void new_Q(int id)
 	{
-		queues.put(id, new ConcreteQ(id, collector));
+		queues.add(new ConcreteQ(id, collector));
 		if (firstQ) set_root_Q(id);
 	}
 
@@ -96,7 +97,7 @@ public class GraphManager
 
 	public void clear()
 	{
-		queues = new HashMap<Integer, ConcreteQ>();
+		queues = new ArrayList<ConcreteQ>();
 		firstQ = true;
 	}
 
@@ -105,11 +106,11 @@ public class GraphManager
 	 */
 	public void clear_nodes()
 	{
-		for (Node node : queues.values())
+		for (Node node : queues)
 		{
 			node.clear_contents();
 		}
-		for (Node node : machines.values())
+		for (Node node : machines)
 		{
 			node.clear_contents();
 		}

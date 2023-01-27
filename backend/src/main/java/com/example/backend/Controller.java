@@ -41,7 +41,6 @@ public class Controller {
 	@GetMapping("/connectMQ")
 	public void connect_M_to_Q(@RequestParam int start, @RequestParam int end)
 	{
-//		System.out.println(start);
 		graphManager.connect_M_to_Q(start, end);
 	}
 

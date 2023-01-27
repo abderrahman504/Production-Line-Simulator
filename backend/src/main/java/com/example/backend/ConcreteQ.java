@@ -21,8 +21,14 @@ public class ConcreteQ extends Node
 		this.id = id;
 		queue = new LinkedList<Item>();
 		this.out_nodes = new HashMap<Integer, ConcreteM>();
+		in_nodes = new HashMap<Integer, Node>();
 		//this.wasEmpty = true;
 		this.accessed = false;
+	}
+
+	public void add_input(Node in)
+	{
+		in_nodes.put(in.get_id(), in);
 	}
 
 	public void add_output(Node out)
