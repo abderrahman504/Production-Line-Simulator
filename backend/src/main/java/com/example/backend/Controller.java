@@ -27,26 +27,34 @@ public class Controller {
 	{
 		System.out.println(id);
 		graphManager.new_M(id);
+		System.out.print("Added M");
 	}
-
+	
 	@GetMapping("/newQ")
 	public void new_Q(@RequestParam int id)
 	{
 		System.out.println(id);
 		graphManager.new_Q(id);
+		System.out.print("Added Q");
 	}
 	
-	@GetMapping("/addConnection")
-	public void add_connection(@RequestParam int start, @RequestParam int end)
+	@GetMapping("/connectMQ")
+	public void connect_M_to_Q(@RequestParam int start, @RequestParam int end)
 	{
-		graphManager.add_connection(start, end);
+		graphManager.connect_M_to_Q(start, end);
+	}
+
+	@GetMapping("/connectQM")
+	public void connect_Q_to_M(@RequestParam int start, @RequestParam int end)
+	{
+		graphManager.connect_Q_to_M(start, end);
 	}
 	
-	@GetMapping("/removeConnection")
-	public void remove_connection(@RequestParam int start, @RequestParam int end)
-	{
-		graphManager.remove_connection(start, end);
-	}
+	// @GetMapping("/removeConnection")
+	// public void remove_connection(@RequestParam int start, @RequestParam int end)
+	// {
+	// 	graphManager.remove_connection(start, end);
+	// }
 	
 	// @GetMapping("/setRoot")
 	// public void set_root_Q(@RequestParam int id)

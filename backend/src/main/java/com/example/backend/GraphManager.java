@@ -4,7 +4,9 @@ import java.util.HashMap;
 
 public class GraphManager 
 {
-	private HashMap<Integer, Node> nodes;
+	private HashMap<Integer, ConcreteQ> queues;
+	private HashMap<Integer, ConcreteM> machines;
+	
 	private Collector collector;
 	private ConcreteQ rootQ;
 	private static GraphManager instance;
@@ -12,7 +14,8 @@ public class GraphManager
 
 	public GraphManager()
 	{
-		nodes = new HashMap<Integer, Node>();
+		machines = new HashMap<Integer, ConcreteM>();
+		queues = new HashMap<Integer, ConcreteQ>();
 		collector = Collector.getInstance();
 	}
 
@@ -29,7 +32,7 @@ public class GraphManager
 	 */
 	public void new_M(int id)
 	{
-		nodes.put(id, new ConcreteM(id, collector));
+		machines.put(id, new ConcreteM(id, collector));
 	}
 
 	/**
@@ -38,7 +41,7 @@ public class GraphManager
 	 */
 	public void new_Q(int id)
 	{
-		nodes.put(id, new ConcreteQ(id, collector));
+		queues.put(id, new ConcreteQ(id, collector));
 		if (firstQ) set_root_Q(id);
 	}
 
@@ -47,26 +50,34 @@ public class GraphManager
 	 * @param start id of the start node
 	 * @param end id of the end node
 	 */
-	public void add_connection(int start, int end)
+	public void connect_M_to_Q(int start, int end)
 	{
-		Node in = nodes.get(start);
-		Node out = nodes.get(end);
+		Node in = machines.get(start);
+		Node out = queues.get(end);
 		in.add_output(out);
 		out.add_input(in);
 	}
 
-	/**
-	 * Removes the connection from the node with id start to the node with id end.
-	 * @param start id of the start node
-	 * @param end id of the end node
-	 */
-	public void remove_connection(int start, int end)
+	public void connect_Q_to_M(int start, int end)
 	{
-		Node in = nodes.get(start);
-		Node out = nodes.get(end);
-		in.remove_output(end);
-		out.remove_input(start);
+		Node in = queues.get(start);
+		Node out = machines.get(end);
+		in.add_output(out);
+		out.add_input(in);
 	}
+
+	// /**
+	//  * Removes the connection from the node with id start to the node with id end.
+	//  * @param start id of the start node
+	//  * @param end id of the end node
+	//  */
+	// public void remove_connection(int start, int end)
+	// {
+	// 	Node in = nodes.get(start);
+	// 	Node out = nodes.get(end);
+	// 	in.remove_output(end);
+	// 	out.remove_input(start);
+	// }
 
 	/**
 	 * Sets the Q node that gets fed the items at the start of the simulation 
@@ -74,7 +85,7 @@ public class GraphManager
 	 */
 	public void set_root_Q(int id)
 	{
-		rootQ = (ConcreteQ)nodes.get(id);
+		rootQ = (ConcreteQ)queues.get(id);
 	}
 
 	/**
@@ -85,7 +96,7 @@ public class GraphManager
 
 	public void clear()
 	{
-		nodes = new HashMap<Integer, Node>();
+		queues = new HashMap<Integer, ConcreteQ>();
 		firstQ = true;
 	}
 
@@ -94,7 +105,11 @@ public class GraphManager
 	 */
 	public void clear_nodes()
 	{
-		for (Node node : nodes.values())
+		for (Node node : queues.values())
+		{
+			node.clear_contents();
+		}
+		for (Node node : machines.values())
 		{
 			node.clear_contents();
 		}
