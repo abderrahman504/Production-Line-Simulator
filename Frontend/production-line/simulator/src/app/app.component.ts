@@ -159,20 +159,20 @@ export class AppComponent {
     }
 
     if (from[0] == 'M') {
-      // this.http.get("http://localhost:8080/back/connectMachineToQueue", {
-      //   params: {
-      //     machineId: f,
-      //     queueId: t
-      //   }
-      // }).subscribe();
+      this.http.get("http://localhost:8080/back/connectMQ", {
+        params: {
+          start: f,
+          end: t
+        }
+      }).subscribe();
     }
     if (from[0] == 'Q') {
-      // this.http.get("http://localhost:8080/connectQueueToMachine", {
-      //   params: {
-      //     queueId: f,
-      //     machineId: t
-      //   }
-      // }).subscribe();
+      this.http.get("http://localhost:8080/back/connectQM", {
+        params: {
+          start: f,
+          end: t
+        }
+      }).subscribe();
     }
     let x = "#" + from
     let gx = "#" + from
