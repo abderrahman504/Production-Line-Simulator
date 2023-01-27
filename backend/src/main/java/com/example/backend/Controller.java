@@ -26,12 +26,14 @@ public class Controller {
 	public void new_M(@RequestParam int id)
 	{
 		graphManager.new_M(id);
+		System.out.print("Added M");
 	}
-
+	
 	@GetMapping("/newQ")
 	public void new_Q(@RequestParam int id)
 	{
 		graphManager.new_Q(id);
+		System.out.print("Added Q");
 	}
 	
 	@GetMapping("/addConnection")
