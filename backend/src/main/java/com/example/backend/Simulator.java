@@ -40,12 +40,13 @@ public class Simulator
 	{
 		simulationItemCount = quantity;
 		ArrayList<Item> items = generate_items(quantity);
-		ArrayList<Integer> itemRates = generate_input_time(quantity);
+		int inputTime = new Random().nextInt(Math.round(1/maxItemRate), Math.round(1/minItemRate)) * timeUnit;
+		snapshot = new Snapshot(items, inputTime);
 		
 		for (int i=0; i<items.size(); i++)
 		{
 			GraphManager.getInstance().get_root_Q().add_item(items.get(i));
-			try {Thread.sleep(itemRates.get(i));}
+			try {Thread.sleep(inputTime);}
 			catch (InterruptedException e) {}
 		}
 		
@@ -82,20 +83,20 @@ public class Simulator
 		return items;
 	}
 
-	/**
-	 * Generates the input times of the given quantity of items.
-	 * @param quantity
-	 * @return an arraylist of the input times
-	 */
-	ArrayList<Integer> generate_input_time(int quantity)
-	{
-		ArrayList<Integer> times = new ArrayList<Integer>(quantity-1);
-		while (quantity-- >= 0)
-		{
-			times.add(new Random().nextInt(Math.round(1/maxItemRate), Math.round(1/minItemRate)) * timeUnit);
-		}
-		return times;
-	}
+	// /**
+	//  * Generates the input times of the given quantity of items.
+	//  * @param quantity
+	//  * @return an arraylist of the input times
+	//  */
+	// ArrayList<Integer> generate_input_time(int quantity)
+	// {
+	// 	ArrayList<Integer> times = new ArrayList<Integer>(quantity-1);
+	// 	while (quantity-- >= 0)
+	// 	{
+	// 		times.add(new Random().nextInt(Math.round(1/maxItemRate), Math.round(1/minItemRate)) * timeUnit);
+	// 	}
+	// 	return times;
+	// }
 
 	/**
 	 * Gets the number of items in this simulation. 
