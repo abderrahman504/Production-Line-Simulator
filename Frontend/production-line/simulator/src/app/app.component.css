@@ -49,3 +49,11 @@ input {
   height: 40px;
   padding: 5px;
 }
+
+.product_num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+}
+

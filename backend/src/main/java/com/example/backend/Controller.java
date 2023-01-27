@@ -25,6 +25,7 @@ public class Controller {
 	@GetMapping("/newM")
 	public void new_M(@RequestParam int id)
 	{
+		System.out.println(id);
 		graphManager.new_M(id);
 		System.out.print("Added M");
 	}
@@ -32,6 +33,7 @@ public class Controller {
 	@GetMapping("/newQ")
 	public void new_Q(@RequestParam int id)
 	{
+		System.out.println(id);
 		graphManager.new_Q(id);
 		System.out.print("Added Q");
 	}

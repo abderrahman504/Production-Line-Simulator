@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import Konva from 'konva';
+import { Circle } from 'konva/lib/shapes/Circle';
 import { Group } from 'konva/lib/Group';
 import { Layer } from 'konva/lib/Layer';
 import { Stage } from 'konva/lib/Stage';
@@ -10,6 +11,8 @@ import { TextCircle } from "./TextCircle";
 import { rectangle } from 'src/app/paint/rectangle';
 import { TextRectangle } from "./TextRectangle";
 import { NgForm } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { WebSocketAPI } from './WebSocketAPI';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +21,7 @@ import { NgForm } from '@angular/forms';
 })
 export class AppComponent {
   title = 'simulator';
+  webSocketAPI!: WebSocketAPI;
   shapeObject: any;
   shapeFactory: any;
   id: any;
@@ -28,13 +32,18 @@ export class AppComponent {
   layer: any;
   counterQueue = -1;
   drawingState: any;
-  http: any;
+  // http: any;
   counterMachine = -1;
-  constructor(factory: ShapCreator) {
-    this.shapeFactory = factory;
 
-  }
+  // constructor(factory: ShapCreator) {
+  //   this.shapeFactory = factory;
+  // }
+  constructor(private http: HttpClient) { }
+
+
   ngOnInit() {
+    // this.webSocketAPI = new WebSocketAPI(this);
+    // this.webSocketAPI._connect();
     this.id = 0;
     this.tr = new Konva.Transformer();
     this.stage = new Stage({
@@ -44,42 +53,52 @@ export class AppComponent {
     });
     this.layer = new Layer();
     this.stage.add(this.layer);
-    this.transform();
+    // this.transform();
   }
 
-  addShape(shape: string) {
-    console.log("fgfgfgg");
-    this.shapeObject = this.shapeFactory
-      .factoryClass(
-        this.id.toString(),
-        shape,
-        600,
-        300,
-        100,
-        50,
-        '#ffffff',
-        '#000000',
-        3,
-        1,
-        1,
-        0,
-        false
-      )
-      .get();
-    this.layer.add(this.shapeObject);
-  }
+  // addShape(shape: string) {
+  //   console.log("fgfgfgg");
+  //   this.shapeObject = this.shapeFactory
+  //     .factoryClass(
+  //       this.id.toString(),
+  //       shape,
+  //       600,
+  //       300,
+  //       100,
+  //       50,
+  //       '#ffffff',
+  //       '#000000',
+  //       3,
+  //       1,
+  //       1,
+  //       0,
+  //       false
+  //     )
+  //     .get();
+  //   this.layer.add(this.shapeObject);
+  // }
 
-  transform() {
-    console.log("11111111");
-    const component = this;
-    this.stage.on('click tap', function (e: any) {
-      if (e.target == component.stage) {
-        component.tr.nodes([]);
-        return;
-      }
-      e.target.draggable(true);
-      component.tr.nodes([e.target]);
-    });
+  // transform() {
+  //   console.log("11111111");
+  //   const component = this;
+  //   this.stage.on('click tap', function (e: any) {
+  //     if (e.target == component.stage) {
+  //       component.tr.nodes([]);
+  //       return;
+  //     }
+  //     e.target.draggable(true);
+  //     component.tr.nodes([e.target]);
+  //   });
+  // }
+
+  simulate() {
+    let productsNumber = (<HTMLInputElement>document.getElementById("num")).value;
+    this.http.get(`http://localhost:8080/simulate/${productsNumber}`)
+      .subscribe();
+    console.log(productsNumber)
+  }
+  replay() {
+    this.http.get("http://localhost:8080/replay").subscribe();
   }
 
   queueState() {
@@ -186,25 +205,25 @@ export class AppComponent {
   }
 
 
-  connect(A: string, B: string) {
+  // connect(A: string, B: string) {
 
-    var shape = this.stage.findOne('#' + (A));
-    var shape2 = this.stage.findOne('#' + (B));
-    console.log(shape)
-    console.log(shape2)
-    var arrow = new Konva.Arrow({
-      id: this.id.toString(),
-      points: [shape.x(), shape.y(), shape2.x(), shape2.y()],
-      pointerLength: 10,
-      pointerWidth: 10,
-      fill: 'black',
-      stroke: 'black',
-      strokeWidth: 4
-    })
+  //   var shape = this.stage.findOne('#' + (A));
+  //   var shape2 = this.stage.findOne('#' + (B));
+  //   console.log(shape)
+  //   console.log(shape2)
+  //   var arrow = new Konva.Arrow({
+  //     id: this.id.toString(),
+  //     points: [shape.x(), shape.y(), shape2.x(), shape2.y()],
+  //     pointerLength: 10,
+  //     pointerWidth: 10,
+  //     fill: 'black',
+  //     stroke: 'black',
+  //     strokeWidth: 4
+  //   })
 
-    this.layer.add(arrow);
-    this.id++;
-  }
+  //   this.layer.add(arrow);
+  //   this.id++;
+  // }
 
 
 
@@ -215,5 +234,29 @@ export class AppComponent {
     this.stage.add(this.layer)
     this.counterMachine = -1
     this.counterQueue = -1
+  }
+
+
+  handleMessage(update: any) {
+    console.log(update)
+    //deal with it
+    var obj = JSON.parse(update as string);
+    console.log(obj.type)
+    if (obj.type === "M") {
+      let x = "#M" + obj.id
+      let machine: Circle = this.stage.findOne(x)
+      machine.fill(obj.color)
+    } else {
+      let x = "#qq" + obj.id
+      this.stage.findOne(x).setAttr('text', 'Q' + obj.id + '\nsize: ' + obj.size).setAttr('fontSize', 28)
+      console.log(obj.size, "size")
+    }
+  }
+
+  connect() {
+    this.webSocketAPI._connect();
+  }
+  disconnect() {
+    this.webSocketAPI._disconnect();
   }
 }

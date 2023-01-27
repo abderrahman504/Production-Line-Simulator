@@ -10,13 +10,13 @@ export class circle implements Paint {
     this.i = n
   }
   draw() {
-    //let stage = new AppComponent().stage
+    // let stage = new AppComponent().stage
     let id: string = "M" + this.i.toString()
-    // this.http.get("http://localhost:8080/addMachine", {
-    //   params: {
-    //     id: this.i
-    //   }
-    // }).subscribe();
+    this.http.get("http://localhost:8080/back/newM", {
+      params: {
+        id: this.i
+      }
+    }).subscribe();
     let circle = new Circle({
       x: 100,
       y: 100,
