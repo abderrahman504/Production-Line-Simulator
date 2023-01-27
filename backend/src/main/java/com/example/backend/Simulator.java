@@ -98,21 +98,31 @@ public class Simulator
 	}
 
 	/**
-	 * Gets
-	 * @return
+	 * Gets the number of items in this simulation. 
+	 * Used to check if the all items have reached the end Q.
+	 * @return number of items in this simulation.
 	 */
 	public int get_sim_items() {return simulationItemCount;}
 
+	/**
+	 * Called when the simulation ends. Do clean up and somehow signal to Front that the simulation ended.
+	 */
 	public void on_simulation_ended()
 	{
 		//Signal to front end that the simulation has ended.
 	}
 
+	/**
+	 * Pauses the simulation.
+	 */
 	public void pause_simulation()
 	{
 
 	}
 
+	/**
+	 * Resumes the paused simualation.
+	 */
 	public void resume_simulation()
 	{
 
