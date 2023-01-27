@@ -10,11 +10,11 @@ export class rectangle implements Paint {
   }
   draw() {
     let id: string = "Q" + this.i.toString()
-    // this.http.get("http://localhost:8080/addQueue", {
-    //   params: {
-    //     id: this.i
-    //   }
-    // }).subscribe();
+    this.http.get("http://localhost:8080/back/newQ", {
+      params: {
+        id: this.i
+      }
+    }).subscribe();
     let rec = new Konva.Rect({
       x: 100,
       y: 100,
