@@ -57,12 +57,12 @@ public class Simulator
 	public void start_prev_simulation()
 	{
 		ArrayList<Item> items = snapshot.get_items();
-		ArrayList<Integer> itemRates = snapshot.get_rates();
+		int inputTime = snapshot.get_input_time();
 		
 		for (int i=0; i<items.size(); i++)
 		{
 			GraphManager.getInstance().get_root_Q().add_item(items.get(i));
-			try {Thread.sleep(itemRates.get(i));}
+			try {Thread.sleep(inputTime);}
 			catch (InterruptedException e) {}
 		}
 	}
@@ -135,16 +135,17 @@ public class Simulator
 class Snapshot
 {
 	private ArrayList<Item> items;
-	private ArrayList<Integer> waitTimes;
+	// private ArrayList<Integer> waitTimes;
+	private int waitTime;
 
-	public Snapshot(ArrayList<Item> items, ArrayList<Integer> itemRates)
+	public Snapshot(ArrayList<Item> items, int waitTime)
 	{
 		this.items = items;
-		waitTimes = itemRates;
+		this.waitTime = waitTime;
 	}
 
 	public ArrayList<Item> get_items() {return items;}
 	
-	public ArrayList<Integer> get_rates() {return waitTimes;} 
+	public int get_input_time() {return waitTime;} 
 
 }

@@ -39,7 +39,7 @@ public class ConcreteM extends Node implements Runnable
 
 	public boolean is_ready() {return ready;}
 
-	
+
 	// Caller inputs to machine
 	synchronized public boolean try_feed(Item item)
 	{
