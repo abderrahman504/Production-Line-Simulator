@@ -12,7 +12,6 @@ public class ConcreteQ extends Node
 	private Queue<Item> queue;
 	private HashMap<Integer, ConcreteM> out_nodes;
 	//private boolean wasEmpty;
-	private boolean accessed;
 
 
 	public ConcreteQ(int id, Collector collector)
@@ -22,7 +21,6 @@ public class ConcreteQ extends Node
 		queue = new LinkedList<Item>();
 		this.out_nodes = new HashMap<Integer, ConcreteM>();
 		//this.wasEmpty = true;
-		this.accessed = false;
 	}
 
 	public void add_output(Node out)
