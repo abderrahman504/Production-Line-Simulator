@@ -110,6 +110,11 @@ public class Simulator
 	 */
 	public void on_simulation_ended()
 	{
+		for (ConcreteM machine : GraphManager.getInstance().get_machines())
+		{
+			machine.stop_machine();
+		}
+		GraphManager.getInstance().clear_nodes();
 		//Signal to front end that the simulation has ended.
 	}
 

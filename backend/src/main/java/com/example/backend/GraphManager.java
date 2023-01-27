@@ -116,4 +116,9 @@ public class GraphManager
 		}
 	}
 
+	public ArrayList<ConcreteM> get_machines()
+	{
+		return machines;
+	}
+
 }
