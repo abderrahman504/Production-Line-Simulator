@@ -9,18 +9,21 @@ import java.util.Queue;
 public class ConcreteQ extends Node
 {
 	Collector collector;
-    private Queue<Item> queue;
+	private Queue<Item> queue;
 	private HashMap<Integer, ConcreteM> out_nodes;
-	private boolean wasEmpty = true;
-	
+	//private boolean wasEmpty;
+	private boolean accessed;
 
-    public ConcreteQ(int id, Collector collector)
+
+	public ConcreteQ(int id, Collector collector)
 	{
 		this.collector = collector;
 		this.id = id;
-        queue = new LinkedList<Item>();
-        this.out_nodes = new HashMap<Integer, ConcreteM>();
-    }
+		queue = new LinkedList<Item>();
+		this.out_nodes = new HashMap<Integer, ConcreteM>();
+		//this.wasEmpty = true;
+		this.accessed = false;
+	}
 
 	public void add_output(Node out)
 	{
@@ -33,51 +36,25 @@ public class ConcreteQ extends Node
 	}
 
 	// Input to queue
-    synchronized public void add_item(Item i)
+	synchronized public void add_item(Item i)
 	{
-        this.queue.add(i);
-		if (wasEmpty)
+		this.queue.add(i);
+		if (out_nodes.size() == 0  && queue.size() == Simulator.getInstance().get_sim_items())
 		{
-			wasEmpty = false;
-			feed_outputs();
-		}
-
-		//Check if this Q is at the end of the line.
-		if (out_nodes.size() == 0)
-		{
-			if (queue.size() == Simulator.getInstance().get_sim_items()) Simulator.getInstance().on_simulation_ended();
-		}
-    }
-
-	// Machine requests output from queue
-	synchronized public void request_item(ConcreteM destination)
-	{
-		if (queue.isEmpty()) 
-		{
-			wasEmpty = true;
-			return;
-		}
-		boolean success = destination.try_feed(queue.peek());
-		if (success){
-			collector.addUpdate(new Transition(this.get_id(), destination.get_id(), queue.remove().getColor()));
+			Simulator.getInstance().on_simulation_ended();
 		}
 	}
 
-	void feed_outputs()
+	// Machine requests output from queue and returns true if successful and false otherwise
+	synchronized public boolean request_item(ConcreteM destination)
 	{
-		for (ConcreteM out: out_nodes.values())
-		{
-			if (queue.isEmpty())
-			{
-				wasEmpty = true;
-				return;
-			}
-			if (out.is_ready())
-			{
-				request_item(out);
-				out.start_machine();
-			}
+		if (queue.isEmpty()) return false;
+		boolean success = destination.try_feed(queue.peek());
+		if (success){
+			collector.addUpdate(new Transition(this.get_id(), destination.get_id(), queue.remove().getColor(), false));
+			return true;
 		}
+		return false;
 	}
 
 	public void clear_contents() {queue = new LinkedList<Item>();}
