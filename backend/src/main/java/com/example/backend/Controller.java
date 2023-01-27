@@ -70,9 +70,10 @@ public class Controller {
 	}
 	
 	@GetMapping("/startSimulation")
-	public void start_simulation()
+	public void start_simulation(@RequestParam int productsNumber)
 	{
-		simulator.start_simulation();
+		System.out.println(productsNumber);
+		simulator.start_simulation(productsNumber);
 	}
 	
 	@GetMapping("/restartSimulation")

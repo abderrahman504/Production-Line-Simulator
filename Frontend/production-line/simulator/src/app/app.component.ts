@@ -93,7 +93,10 @@ export class AppComponent {
 
   simulate() {
     let productsNumber = (<HTMLInputElement>document.getElementById("num")).value;
-    this.http.get(`http://localhost:8080/simulate/${productsNumber}`)
+    this.http.get("http://localhost:8080/back/startSimulation", {
+      params: {
+      productsNumber:productsNumber
+    }})
       .subscribe();
     console.log(productsNumber)
   }
