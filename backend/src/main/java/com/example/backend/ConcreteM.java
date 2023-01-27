@@ -10,8 +10,7 @@ public class ConcreteM extends Node implements Runnable
 	Collector collector;
 	private final static int minServiceTime = 1;
 	private final static int maxServiceTime = 20;
-	private final static int timeUnit = 250;
-    private int serviceTime;
+	private int serviceTime;
     private Item currentItem;
     private boolean ready;
     private ConcreteQ output;
@@ -76,7 +75,7 @@ public class ConcreteM extends Node implements Runnable
 			while (currentItem != null)
 			{
 				//Call Controller to signal to front to update this M's color.
-				Thread.sleep(serviceTime*timeUnit);
+				Thread.sleep(serviceTime*Simulator.timeUnit);
 				finish_service();
 				
 			}
@@ -89,4 +88,6 @@ public class ConcreteM extends Node implements Runnable
 	{
 		t.start();
 	}
+
+	public void clear_contents() {currentItem = null;}
 }

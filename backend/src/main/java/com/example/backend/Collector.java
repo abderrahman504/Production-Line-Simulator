@@ -1,12 +1,13 @@
 package com.example.backend;
-import com.example.backend.Transition;
 
 import java.util.ArrayList;
 
 public class Collector {
     private static Collector instance;
     private ArrayList<Transition> updates;
-    private Collector(){
+    
+	
+	private Collector(){
         updates = new ArrayList<>();
     }
 

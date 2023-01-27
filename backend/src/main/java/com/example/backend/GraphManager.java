@@ -6,6 +6,8 @@ public class GraphManager
 {
 	private HashMap<Integer, Node> nodes;
 	private Collector collector;
+	private ConcreteQ rootQ;
+	private static GraphManager instance;
 
 	public GraphManager()
 	{
@@ -13,6 +15,12 @@ public class GraphManager
 		collector = Collector.getInstance();
 	}
 
+	public static synchronized GraphManager getInstance(){
+        if (instance == null){
+            instance = new GraphManager();
+        }
+        return instance;
+    }
 
 	public void new_M(int id)
 	{
@@ -39,6 +47,26 @@ public class GraphManager
 		Node out = nodes.get(end);
 		in.remove_output(end);
 		out.remove_input(start);
+	}
+
+	public void set_root_Q(int id)
+	{
+		rootQ = (ConcreteQ)nodes.get(id);
+	}
+
+	public ConcreteQ get_root_Q() {return rootQ;} 
+
+	public void clear()
+	{
+		nodes = new HashMap<Integer, Node>();
+	}
+
+	public void clear_nodes()
+	{
+		for (Node node : nodes.values())
+		{
+			node.clear_contents();
+		}
 	}
 
 }

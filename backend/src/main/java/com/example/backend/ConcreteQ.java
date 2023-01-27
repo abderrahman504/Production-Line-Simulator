@@ -41,6 +41,12 @@ public class ConcreteQ extends Node
 			wasEmpty = false;
 			feed_outputs();
 		}
+
+		//Check if this Q is at the end of the line.
+		if (out_nodes.size() == 0)
+		{
+			if (queue.size() == Simulator.getInstance().get_sim_items()) Simulator.getInstance().on_simulation_ended();
+		}
     }
 
 	// Machine requests output from queue
@@ -73,4 +79,6 @@ public class ConcreteQ extends Node
 			}
 		}
 	}
+
+	public void clear_contents() {queue = new LinkedList<Item>();}
 }

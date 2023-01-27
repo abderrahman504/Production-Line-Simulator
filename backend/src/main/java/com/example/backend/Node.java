@@ -23,4 +23,6 @@ public abstract class Node {
 
 	abstract public void remove_output(int id);
 
+	abstract public void clear_contents();
+
 }
