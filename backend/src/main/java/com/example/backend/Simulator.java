@@ -6,13 +6,13 @@ import java.util.Random;
 
 public class Simulator 
 {
-	private static Snapshot snapshot;
-	private final static int maxItemsQuantity = 20;
-	private final static float maxItemRate = 1/2.0f;
-	private final static float minItemRate = 1/8.0f; 
-	public final static int timeUnit = 250;
+	private Snapshot snapshot;
+	private final int maxItemsQuantity = 20;
+	private final float maxItemRate = 1/2.0f;
+	private final float minItemRate = 1/8.0f; 
+	public final int timeUnit = 250;
 	private static Simulator instance;
-	private static int simulationItemCount;
+	private int simulationItemCount;
 
 	public static Simulator getInstance(){
         if (instance == null){
@@ -21,17 +21,26 @@ public class Simulator
         return instance;
     }
 	
+	/**
+	 *Starts a simulation. Generates a random number of items for the simulation.  
+	 */
 	public void start_simulation()
 	{
 		int quantity = new Random().nextInt() % maxItemsQuantity;
 		start_simulation(quantity);
 	}
 
+	/**
+	 *Starts a simulation. Generates the given number of items for the simulation.  
+	 *Feeds each item to the root Q at a random rate.
+	 Generates a snapshot of the items and their input rates.
+	 * @param quantity
+	 */
 	public void start_simulation(int quantity)
 	{
 		simulationItemCount = quantity;
 		ArrayList<Item> items = generate_items(quantity);
-		ArrayList<Integer> itemRates = generate_input_rate(quantity);
+		ArrayList<Integer> itemRates = generate_input_time(quantity);
 		
 		for (int i=0; i<items.size(); i++)
 		{
@@ -39,9 +48,12 @@ public class Simulator
 			try {Thread.sleep(itemRates.get(i));}
 			catch (InterruptedException e) {}
 		}
-			
+		
 	}
 
+	/**
+	 * Starts the previous simulation again.
+	 */
 	public void start_prev_simulation()
 	{
 		ArrayList<Item> items = snapshot.get_items();
@@ -55,6 +67,11 @@ public class Simulator
 		}
 	}
 
+	/**
+	 * Generate the given quantity of items
+	 * @param quantity
+	 * @return an arraylist of the items.
+	 */
 	ArrayList<Item> generate_items(int quantity)
 	{
 		ArrayList<Item> items = new ArrayList<Item>(quantity);
@@ -65,7 +82,12 @@ public class Simulator
 		return items;
 	}
 
-	ArrayList<Integer> generate_input_rate(int quantity)
+	/**
+	 * Generates the input times of the given quantity of items.
+	 * @param quantity
+	 * @return an arraylist of the input times
+	 */
+	ArrayList<Integer> generate_input_time(int quantity)
 	{
 		ArrayList<Integer> times = new ArrayList<Integer>(quantity-1);
 		while (quantity-- >= 0)
@@ -75,11 +97,25 @@ public class Simulator
 		return times;
 	}
 
+	/**
+	 * Gets
+	 * @return
+	 */
 	public int get_sim_items() {return simulationItemCount;}
 
 	public void on_simulation_ended()
 	{
 		//Signal to front end that the simulation has ended.
+	}
+
+	public void pause_simulation()
+	{
+
+	}
+
+	public void resume_simulation()
+	{
+
 	}
 	
 }

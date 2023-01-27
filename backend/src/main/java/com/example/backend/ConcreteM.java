@@ -39,6 +39,7 @@ public class ConcreteM extends Node implements Runnable
 
 	public boolean is_ready() {return ready;}
 
+	
 	// Caller inputs to machine
 	synchronized public boolean try_feed(Item item)
 	{
@@ -75,7 +76,7 @@ public class ConcreteM extends Node implements Runnable
 			while (currentItem != null)
 			{
 				//Call Controller to signal to front to update this M's color.
-				Thread.sleep(serviceTime*Simulator.timeUnit);
+				Thread.sleep(serviceTime*Simulator.getInstance().timeUnit);
 				finish_service();
 				
 			}
