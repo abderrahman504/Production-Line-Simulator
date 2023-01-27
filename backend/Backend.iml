@@ -69,8 +69,6 @@
     <orderEntry type="library" name="Maven: io.micrometer:micrometer-commons:1.10.3" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:6.0.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:6.0.4" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.postgresql:postgresql:42.5.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.checkerframework:checker-qual:3.5.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.boot:spring-boot-starter-test:3.0.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.boot:spring-boot-test:3.0.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.boot:spring-boot-test-autoconfigure:3.0.2" level="project" />
