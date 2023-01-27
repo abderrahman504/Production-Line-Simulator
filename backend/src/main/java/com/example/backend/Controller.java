@@ -81,9 +81,9 @@ public class Controller {
 	}
 	
 	@PostMapping("/update")
-	public void get_updates()
+	public ArrayList<Transition> get_updates()
 	{
-		// collector.getUpdates();
+		return collector.getUpdates();
 	}
 	
 	
